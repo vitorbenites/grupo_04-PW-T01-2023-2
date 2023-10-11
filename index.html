@@ -1,37 +1,100 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
+    <!-- Título da página -->
     <title>Meu Calendário</title>
-    <link rel="stylesheet" href="style.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link href='https://fonts.googleapis.com/css?family=Roboto Mono' rel='stylesheet'>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200">
+    <!-- Referencia ao css -->
+    <link rel="stylesheet" href="style.css" />
+    <!-- Responsividade -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Referencia da fonte Roboto -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto Mono"
+      rel="stylesheet"
+    />
+    <!-- Referencia dos icones -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+    <!-- Referencia do arquivo de script -->
     <script src="script.js" defer></script>
   </head>
   <body>
-    <div class="wrapper">
-			<div class="titulo">
-				<span>Meu Calendário</span>
-			</div>
-      <header>
-        <p class="data-atual"></p>
-        <div class="icons">
-          <span id="prev" class="material-symbols-rounded">chevron_left</span>
-          <span id="next" class="material-symbols-rounded">chevron_right</span>
+    <div class="sidebar-container"></div>
+    <div class="container-body">
+      <div class="container">
+        <div class="container-calendario">
+          <!-- "Meu Calendário" acima do calendário -->
+          <div class="titulo">
+            <span>Meu Calendário</span>
+          </div>
+          <!-- Header com o mês e as setas de proximo e anterior -->
+          <header>
+            <p class="data-atual"></p>
+            <div class="icons">
+              <span id="prev" class="material-symbols-rounded"
+                >chevron_left</span
+              >
+              <span id="next" class="material-symbols-rounded"
+                >chevron_right</span
+              >
+            </div>
+          </header>
+          <!-- Div do calendário -->
+          <div class="calendario">
+            <!-- Dias da semana -->
+            <ul class="semanas">
+              <li>Dom</li>
+              <li>Seg</li>
+              <li>Ter</li>
+              <li>Qua</li>
+              <li>Qui</li>
+              <li>Sex</li>
+              <li>Sab</li>
+            </ul>
+            <!-- Dias do mes (alterados no script) -->
+            <ul class="dias"></ul>
+          </div>
         </div>
-      </header>
-      <div class="calendario">
-        <ul class="semanas">
-          <li>Dom</li>
-          <li>Seg</li>
-          <li>Ter</li>
-          <li>Qua</li>
-          <li>Qui</li>
-          <li>Sex</li>
-          <li>Sab</li>
-        </ul>
-        <ul class="dias"></ul>
+        <div class="evento">
+          <div class="titulo-evento">
+            <span>Eventos</span>
+          </div>
+          <div class="dia-evento">
+            <span>10 de Outubro</span>
+          </div>
+          <div class="lista-eventos">
+            <div class="exemplo-evento">
+              <div class="texto-evento">
+                <p>Evento 1</p>
+                <p>10:20 - 11:00</p>
+              </div>
+              <div class="icons-event">
+                <span class="material-symbols-outlined"> edit </span>
+                <span class="material-symbols-outlined"> delete </span>
+              </div>
+            </div>
+            <div class="exemplo-evento">
+              <div class="texto-evento">
+                <p>Evento 2</p>
+                <p>10:20 - 11:00</p>
+              </div>
+              <div class="icons-event">
+                <span class="material-symbols-outlined"> edit </span>
+                <span class="material-symbols-outlined"> delete </span>
+              </div>
+            </div>
+          </div>
+          <div class="btn-container">
+            <button class="add-evento">Adicionar Evento</button>
+          </div>
+        </div>
       </div>
     </div>
   </body>

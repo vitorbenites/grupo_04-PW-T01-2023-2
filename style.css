@@ -1,46 +1,69 @@
-*{
+/* Estilização geral da página */
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Roboto Mono';
+  font-family: "Roboto Mono";
 }
 
-body{
+/* Estilização do body */
+body {
+  display: flex;
+}
+
+/* container-body deixando os elementos no meio */
+.container-body {
   display: flex;
   align-items: center;
-  padding: 0 10px;
   justify-content: center;
+  width: 100%;
   min-height: 100vh;
   background: #ffffff;
 }
 
-.wrapper{
+/* container para deixar a div de calendário e eventos do mesmo tamanho */
+.container {
+  display: flex;
+}
+
+/* CALENDARIO */
+/* Estilização do container com o calendário */
+.container-calendario {
+  display: inline-block;
   width: 450px;
+  margin: 10px;
   background: #fff;
-	border-style: solid;
-	border-color: #ccc;
+  border-style: solid;
+  border-color: #ccc;
   border-radius: 10px;
 }
 
-.titulo{
-  padding: 15px;
-	background: #ccc;
-	font-size: 1.9rem;
-	text-align: center;
+/* Estilização do "Meu Calendário" */
+.titulo {
+  padding: 10px;
+  background: #ccc;
+  font-size: 1.9rem;
+  text-align: center;
 }
 
-.wrapper header{
+/* Estilização da linha com o nome do mês e as setas */
+.container-calendario header {
   display: flex;
   align-items: center;
-  padding: 25px 30px 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 30px;
   justify-content: space-between;
+  padding-right: 30px;
 }
 
-header .icons{
+/* Div dos Icones */
+header .icons {
   display: flex;
 }
 
-header .icons span{
+/* Span dos ícones */
+header .icons span {
   height: 38px;
   width: 38px;
   margin: 0 1px;
@@ -52,52 +75,53 @@ header .icons span{
   user-select: none;
   border-radius: 50%;
 }
-.icons span:last-child{
+
+.icons span:last-child {
   margin-right: -10px;
 }
-header .icons span:hover{
+header .icons span:hover {
   background: #f2f2f2;
 }
-header .data-atual{
+header .data-atual {
   font-size: 1.45rem;
   font-weight: 500;
 }
-.calendario{
+
+/* Estilização do calendario e seus elementos */
+.calendario {
   padding: 20px;
 }
-.calendario ul{
+.calendario ul {
   display: flex;
   flex-wrap: wrap;
   list-style: none;
   text-align: center;
 }
-.calendario .dias{
+.calendario .dias {
   margin-bottom: 20px;
 }
-.calendario li{
+.calendario li {
   color: #333;
   width: calc(100% / 7);
   font-size: 1.07rem;
 }
-.calendario .semanas li{
+.calendario .semanas li {
   font-weight: 500;
   cursor: default;
 }
-.calendario .dias li{
+.calendario .dias li {
   z-index: 1;
   cursor: pointer;
   position: relative;
   margin-top: 30px;
 }
-
-.dias li.inactive{
+.dias li.inactive {
   color: #aaa;
 }
-.dias li.active{
+.dias li.active {
   color: #fff;
 }
-
-.dias li::before{
+.dias li::before {
   position: absolute;
   content: "";
   left: 50%;
@@ -108,10 +132,72 @@ header .data-atual{
   border-radius: 50%;
   transform: translate(-50%, -50%);
 }
-.dias li.active::before{
+.dias li.active::before {
   background: #ccc;
 }
-
-.dias li:not(.active):hover::before{
+.dias li:not(.active):hover::before {
   background: #f2f2f2;
+}
+
+/* EVENTO */
+/* Estilização da div do evento */
+.evento {
+  display: inline-block;
+  width: 300px;
+  margin: 10px;
+  background: #fff;
+  border-style: solid;
+  border-color: #ccc;
+  border-radius: 10px;
+}
+
+/* Div escrita "Eventos" */
+.titulo-evento {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background: #ccc;
+  font-size: 1.9rem;
+  text-align: center;
+}
+
+/* Texto do dia clicado ou atual */
+.dia-evento {
+  text-align: center;
+  font-size: 1.45rem;
+  padding: 10px;
+}
+
+/* Lista dos eventos que serão adicionados pelo js */
+.lista-eventos {
+  padding: 8px;
+}
+
+/* Estilização da div do evento */
+.exemplo-evento {
+  display: flex;
+  padding: 10px;
+  background: #ccc;
+  font-size: 1.2rem;
+  border-radius: 10px;
+  margin: 5px;
+}
+.icons-event {
+  margin-left: auto;
+}
+
+/* Div do Botão de adicionar evento */
+.btn-container {
+  display: flex;
+  justify-content: center;
+}
+/* Botão de adicionar evento */
+.add-evento {
+  font-size: 1.2rem;
+  background: #c3c3c3;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin: 5px;
+  border-radius: 10px;
 }
