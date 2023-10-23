@@ -39,11 +39,12 @@
         onclick="document.getElementById('redefinir-senha').style.display='block'"
         >&#xf044; Redefinir Senha</a
       >
-      <a href="#" class="w3-bar-item w3-button w3-large w3-hover-indigo"
+      <a
+        href="login.html"
+        class="w3-bar-item w3-button w3-large w3-hover-indigo"
         >&#xf08b; Sair</a
       >
     </div>
-
     <!-- Divisão principal: com w3-display-container que cobre toda a tela, As divs podem ser posicionadas -->
     <div class="w3-container w3-cursive w3-large w3-pale-green" id="calendario">
       <!-- Botão para abrir o sidebar -->
@@ -104,7 +105,7 @@
     <!-- Modal de Adicionar evento -->
     <div id="adicionar-evento" class="w3-modal">
       <div class="w3-modal-content">
-        <div class="w3-container w3-padding w3-cursive">
+        <div class="w3-container w3-padding w3-cursive w3-teal">
           <span
             onclick="document.getElementById('adicionar-evento').style.display='none'"
             class="w3-button w3-display-topright w3-xlarge"
@@ -118,31 +119,49 @@
           </div>
           <div class="w3-container">
             <label>Título</label>
-            <input class="w3-input w3-border" type="text" />
+            <input
+              class="w3-input w3-border w3-hover-border-black"
+              type="text"
+            />
           </div>
           <!-- Linha de inputs sobre os horários e datas -->
           <div class="w3-row-padding w3-mobile">
             <div class="w3-quarter">
               <label>Data Início</label>
-              <input class="w3-input w3-border" type="date" />
+              <input
+                class="w3-input w3-border w3-hover-border-black"
+                type="date"
+              />
             </div>
             <div class="w3-quarter">
               <label>Data Fim</label>
-              <input class="w3-input w3-border" type="date" />
+              <input
+                class="w3-input w3-border w3-hover-border-black"
+                type="date"
+              />
             </div>
             <div class="w3-quarter">
               <label>Horário Início</label>
-              <input class="w3-input w3-border" type="time" />
+              <input
+                class="w3-input w3-border w3-hover-border-black"
+                type="time"
+              />
             </div>
             <div class="w3-quarter">
               <label>Horário Fim</label>
-              <input class="w3-input w3-border" type="time" />
+              <input
+                class="w3-input w3-border w3-hover-border-black"
+                type="time"
+              />
             </div>
           </div>
           <div class="w3-row-padding w3-mobile">
             <div class="w3-twothird">
               <label>Local</label>
-              <input class="w3-input w3-border" type="text" />
+              <input
+                class="w3-input w3-border w3-hover-border-black"
+                type="text"
+              />
             </div>
             <div class="w3-third">
               <label for="">Frequência</label>
@@ -156,20 +175,20 @@
           </div>
           <div class="w3-container w3-padding">
             <label>Descrição</label>
-            <textarea class="w3-input w3-border" rows="3"></textarea>
+            <textarea
+              class="w3-input w3-border w3-hover-border-black"
+              rows="3"
+            ></textarea>
           </div>
-          <div class="w3-row-cell w3-padding w3-mobile">
-            <div class="w3-cell">
-              <button class="w3-button w3-green w3-large">Concluído</button>
-            </div>
-            <div class="w3-cell">
-              <button
-                class="w3-button w3-gray w3-large"
-                onclick="document.getElementById('adicionar-evento').style.display='none'"
-              >
-                Cancelar
-              </button>
-            </div>
+
+          <div class="w3-padding">
+            <button class="w3-button w3-green w3-large">Concluído</button>
+            <button
+              class="w3-button w3-red w3-large"
+              onclick="document.getElementById('adicionar-evento').style.display='none'"
+            >
+              Cancelar
+            </button>
           </div>
         </div>
       </div>
@@ -178,7 +197,7 @@
     <!-- Modal de Perfil -->
     <div id="perfil" class="w3-modal">
       <div class="w3-modal-content">
-        <div class="w3-container w3-cursive">
+        <div class="w3-container w3-cursive w3-teal">
           <span
             onclick="document.getElementById('perfil').style.display='none'"
             class="w3-button w3-display-topright w3-xlarge"
@@ -189,26 +208,28 @@
           </div>
           <div class="w3-container w3-margin">
             <label>Nome</label>
-            <input class="w3-input w3-border" type="text" />
+            <input
+              class="w3-input w3-border w3-hover-border-black"
+              type="text"
+            />
           </div>
           <div class="w3-container w3-margin">
             <label>Email</label>
-            <input class="w3-input w3-border" type="email" />
+            <input
+              class="w3-input w3-border w3-hover-border-black"
+              type="email"
+            />
           </div>
-          <div class="w3-row-cell w3-margin w3-padding w3-mobile">
-            <div class="w3-cell">
-              <button class="w3-button w3-green w3-hover-indigo w3-large">
-                Concluído
-              </button>
-            </div>
-            <div class="w3-cell">
-              <button
-                class="w3-button w3-gray w3-large"
-                onclick="document.getElementById('perfil').style.display='none'"
-              >
-                Cancelar
-              </button>
-            </div>
+          <div class="w3-padding w3-margin">
+            <button class="w3-button w3-green w3-large w3-hover-indigo">
+              Concluído
+            </button>
+            <button
+              class="w3-button w3-red w3-large"
+              onclick="document.getElementById('perfil').style.display='none'"
+            >
+              Cancelar
+            </button>
           </div>
         </div>
       </div>
@@ -217,7 +238,7 @@
     <!-- Inicio Modal de Redefinir Senha -->
     <div id="redefinir-senha" class="w3-modal">
       <div class="w3-modal-content">
-        <div class="w3-container w3-cursive">
+        <div class="w3-container w3-cursive w3-teal">
           <span
             onclick="document.getElementById('redefinir-senha').style.display='none'"
             class="w3-button w3-display-topright w3-xlarge"
@@ -228,30 +249,35 @@
           </div>
           <div class="w3-container w3-margin">
             <label>Senha atual:</label>
-            <input class="w3-input w3-border" type="text" />
+            <input
+              class="w3-input w3-border w3-hover-border-black"
+              type="text"
+            />
           </div>
           <div class="w3-container w3-margin">
             <label>Nova senha:</label>
-            <input class="w3-input w3-border" type="email" />
+            <input
+              class="w3-input w3-border w3-hover-border-black"
+              type="email"
+            />
           </div>
           <div class="w3-container w3-margin">
             <label>Confirmar nova senha:</label>
-            <input class="w3-input w3-border" type="email" />
+            <input
+              class="w3-input w3-border w3-hover-border-black"
+              type="email"
+            />
           </div>
-          <div class="w3-row-cell w3-margin w3-padding w3-mobile">
-            <div class="w3-cell">
-              <button class="w3-button w3-green w3-hover-indigo w3-large">
-                Concluído
-              </button>
-            </div>
-            <div class="w3-cell">
-              <button
-                class="w3-button w3-gray w3-large"
-                onclick="document.getElementById('redefinir-senha').style.display='none'"
-              >
-                Cancelar
-              </button>
-            </div>
+          <div class="w3-padding w3-margin">
+            <button class="w3-button w3-green w3-large w3-hover-indigo">
+              Concluído
+            </button>
+            <button
+              class="w3-button w3-red w3-large"
+              onclick="document.getElementById('redefinir-senha').style.display='none'"
+            >
+              Cancelar
+            </button>
           </div>
         </div>
       </div>
