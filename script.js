@@ -1,8 +1,8 @@
 // Script do Calendário
 // Vitor de Freitas Benites
 const diasTag = document.querySelector(".dias"),
-  dataAtual = document.querySelector(".data-atual"),
-  prevProxIcon = document.querySelectorAll(".icons span");
+  dataAtual = document.querySelector(".mes-atual"),
+  prevProxIcon = document.querySelectorAll(".icons");
 
 // Atribuindo data, ano atual e mes atual
 let data = new Date(),
@@ -35,7 +35,9 @@ const mostrarCalendario = () => {
 
   for (let i = primeiroDiaMes; i > 0; i--) {
     // Listando os últimos dias do mês anterior
-    liTag += `<li class="inactive">${ultimaDataUltimoMes - i + 1}</li>`;
+    liTag += `<li class="w3-col w3-text-gray w3-hover-indigo">${
+      ultimaDataUltimoMes - i + 1
+    }</li>`;
   }
 
   for (let i = 1; i <= ultimaDataMes; i++) {
@@ -45,14 +47,16 @@ const mostrarCalendario = () => {
       i === data.getDate() &&
       mesAtual === new Date().getMonth() &&
       anoAtual === new Date().getFullYear()
-        ? "active"
+        ? "active w3-teal"
         : "";
-    liTag += `<li class="${ehHoje}">${i}</li>`;
+    liTag += `<li class="w3-col ${ehHoje} w3-hover-indigo">${i}</li>`;
   }
 
   for (let i = ultimoDiaMes; i < 6; i++) {
     // Listando os primeiros dias do próximo mês
-    liTag += `<li class="inactive">${i - ultimoDiaMes + 1}</li>`;
+    liTag += `<li class="w3-col w3-text-gray w3-hover-indigo">${
+      i - ultimoDiaMes + 1
+    }</li>`;
   }
   dataAtual.innerText = `${meses[mesAtual]} ${anoAtual}`;
   diasTag.innerHTML = liTag;
@@ -79,12 +83,10 @@ prevProxIcon.forEach((icon) => {
   });
 });
 
-/* Open the sidenav */
-function openNav() {
-  document.getElementById("mySidenav").style.display = "block";
+// Funções para mostrar o sidenav
+function w3_open() {
+  document.getElementById("mySidebar").style.display = "block";
 }
-
-/* Close/hide the sidenav */
-function closeNav() {
-  document.getElementById("mySidenav").style.display = "none";
+function w3_close() {
+  document.getElementById("mySidebar").style.display = "none";
 }

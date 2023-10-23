@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Titulo da página "Meu Calendário" -->
+    <title>Meu Calendário</title>
+    <!-- Responsividade -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Referência do W3CSS -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+    <!-- Referência de um arquivo auxiliar style.css -->
+    <link rel="stylesheet" href="style.css" />
+    <!-- Referência do JavaScript script.js -->
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <div
+      class="w3-left w3-sidebar w3-bar-block w3-border-right w3-cursive w3-teal"
+      style="display: none; width: 25%"
+      id="mySidebar"
+    >
+      <button
+        onclick="w3_close()"
+        class="w3-button w3-bar-item w3-large w3-hover-indigo"
+      >
+        &times; Fechar
+      </button>
+      <div class="w3-card w3-margin w3-padding w3-large w3-center w3-indigo">
+        <p id="name">Vitor de Freitas Benites</p>
+      </div>
+      <a
+        class="w3-bar-item w3-button w3-large w3-hover-indigo"
+        onclick="document.getElementById('perfil').style.display='block'"
+        >&#xf2bd; Perfil</a
+      >
+      <a
+        class="w3-bar-item w3-button w3-large w3-hover-indigo"
+        onclick="document.getElementById('redefinir-senha').style.display='block'"
+        >&#xf044; Redefinir Senha</a
+      >
+      <a href="#" class="w3-bar-item w3-button w3-large w3-hover-indigo"
+        >&#xf08b; Sair</a
+      >
+    </div>
+
+    <!-- Divisão principal: com w3-display-container que cobre toda a tela, As divs podem ser posicionadas -->
+    <div class="w3-container w3-cursive w3-large w3-pale-green" id="calendario">
+      <!-- Botão para abrir o sidebar -->
+      <button
+        class="w3-display-topleft w3-button w3-large w3-mobile w3-hover-indigo"
+        onclick="w3_open()"
+      >
+        ☰ Menu
+      </button>
+      <!-- Div pra centralizar os dois cards -->
+      <div class="w3-display-middle w3-center">
+        <!-- Div do card contendo o calendário -->
+        <div class="w3-card w3-cell w3-mobile" id="calendario-card">
+          <!-- Div com o título "Meu Calendário" -->
+          <div class="w3-teal"><span class="w3-xxlarge">Calendário</span></div>
+          <!-- Div com as setas para trocar de mês, o mês e o ano -->
+          <div class="w3-display-container w3-teal w3-padding">
+            <span
+              class="icons w3-display-left w3-xlarge w3-hover-indigo w3-margin-left"
+              id="prev"
+              >&#10094;</span
+            >
+            <span class="mes-atual w3-xlarge"></span>
+            <span
+              class="icons w3-display-right w3-xlarge w3-hover-indigo w3-margin-right"
+              id="next"
+              >&#10095;</span
+            >
+          </div>
+          <!-- Dias da semana no calendário -->
+          <ul class="w3-ul" id="dias-semana">
+            <li class="w3-col">Dom</li>
+            <li class="w3-col">Seg</li>
+            <li class="w3-col">Ter</li>
+            <li class="w3-col">Qua</li>
+            <li class="w3-col">Qui</li>
+            <li class="w3-col">Sex</li>
+            <li class="w3-col">Sab</li>
+          </ul>
+          <!-- Dias do mês do calendário inseridos com javascript e posicionados no css-->
+          <ul class="dias w3-ul"></ul>
+        </div>
+        <div class="w3-card w3-cell w3-mobile w3-teal" style="width: 40%">
+          <div><span class="w3-xlarge">Eventos</span></div>
+          <div><span class="w3-xlarge">19 de Outubro</span></div>
+          <div class="eventos"></div>
+          <div class="btn-adicionar-eventos w3-padding w3-margin">
+            <button
+              onclick="document.getElementById('adicionar-evento').style.display='block'"
+              class="w3-button w3-green w3-hover-indigo"
+            >
+              Adicionar Evento
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Modal de Adicionar evento -->
+    <div id="adicionar-evento" class="w3-modal">
+      <div class="w3-modal-content">
+        <div class="w3-container w3-padding w3-cursive">
+          <span
+            onclick="document.getElementById('adicionar-evento').style.display='none'"
+            class="w3-button w3-display-topright w3-xlarge"
+            >&times;</span
+          >
+          <div class="w3-xlarge w3-center">
+            <span>Adicionar Evento</span>
+          </div>
+          <div class="w3-large w3-center">
+            <span>19 de Outubro</span>
+          </div>
+          <div class="w3-container">
+            <label>Título</label>
+            <input class="w3-input w3-border" type="text" />
+          </div>
+          <!-- Linha de inputs sobre os horários e datas -->
+          <div class="w3-row-padding w3-mobile">
+            <div class="w3-quarter">
+              <label>Data Início</label>
+              <input class="w3-input w3-border" type="date" />
+            </div>
+            <div class="w3-quarter">
+              <label>Data Fim</label>
+              <input class="w3-input w3-border" type="date" />
+            </div>
+            <div class="w3-quarter">
+              <label>Horário Início</label>
+              <input class="w3-input w3-border" type="time" />
+            </div>
+            <div class="w3-quarter">
+              <label>Horário Fim</label>
+              <input class="w3-input w3-border" type="time" />
+            </div>
+          </div>
+          <div class="w3-row-padding w3-mobile">
+            <div class="w3-twothird">
+              <label>Local</label>
+              <input class="w3-input w3-border" type="text" />
+            </div>
+            <div class="w3-third">
+              <label for="">Frequência</label>
+              <select class="w3-select" name="option">
+                <option value="" disabled selected>Escolha</option>
+                <option value="1">Hoje</option>
+                <option value="2">Diário</option>
+                <option value="3">Semanal</option>
+              </select>
+            </div>
+          </div>
+          <div class="w3-container w3-padding">
+            <label>Descrição</label>
+            <textarea class="w3-input w3-border" rows="3"></textarea>
+          </div>
+          <div class="w3-row-cell w3-padding w3-mobile">
+            <div class="w3-cell">
+              <button class="w3-button w3-green w3-large">Concluído</button>
+            </div>
+            <div class="w3-cell">
+              <button
+                class="w3-button w3-gray w3-large"
+                onclick="document.getElementById('adicionar-evento').style.display='none'"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Fim modal de adicionar evento -->
+    <!-- Modal de Perfil -->
+    <div id="perfil" class="w3-modal">
+      <div class="w3-modal-content">
+        <div class="w3-container w3-cursive">
+          <span
+            onclick="document.getElementById('perfil').style.display='none'"
+            class="w3-button w3-display-topright w3-xlarge"
+            >&times;</span
+          >
+          <div class="w3-xlarge w3-center w3-margin">
+            <span>Editar Perfil</span>
+          </div>
+          <div class="w3-container w3-margin">
+            <label>Nome</label>
+            <input class="w3-input w3-border" type="text" />
+          </div>
+          <div class="w3-container w3-margin">
+            <label>Email</label>
+            <input class="w3-input w3-border" type="email" />
+          </div>
+          <div class="w3-row-cell w3-margin w3-padding w3-mobile">
+            <div class="w3-cell">
+              <button class="w3-button w3-green w3-hover-indigo w3-large">
+                Concluído
+              </button>
+            </div>
+            <div class="w3-cell">
+              <button
+                class="w3-button w3-gray w3-large"
+                onclick="document.getElementById('perfil').style.display='none'"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Fim modal editar perfil -->
+    <!-- Inicio Modal de Redefinir Senha -->
+    <div id="redefinir-senha" class="w3-modal">
+      <div class="w3-modal-content">
+        <div class="w3-container w3-cursive">
+          <span
+            onclick="document.getElementById('redefinir-senha').style.display='none'"
+            class="w3-button w3-display-topright w3-xlarge"
+            >&times;</span
+          >
+          <div class="w3-xlarge w3-center w3-margin">
+            <span>Redefinir Senha</span>
+          </div>
+          <div class="w3-container w3-margin">
+            <label>Senha atual:</label>
+            <input class="w3-input w3-border" type="text" />
+          </div>
+          <div class="w3-container w3-margin">
+            <label>Nova senha:</label>
+            <input class="w3-input w3-border" type="email" />
+          </div>
+          <div class="w3-container w3-margin">
+            <label>Confirmar nova senha:</label>
+            <input class="w3-input w3-border" type="email" />
+          </div>
+          <div class="w3-row-cell w3-margin w3-padding w3-mobile">
+            <div class="w3-cell">
+              <button class="w3-button w3-green w3-hover-indigo w3-large">
+                Concluído
+              </button>
+            </div>
+            <div class="w3-cell">
+              <button
+                class="w3-button w3-gray w3-large"
+                onclick="document.getElementById('redefinir-senha').style.display='none'"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
