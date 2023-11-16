@@ -27,6 +27,7 @@ export default function Calendario() {
     document.getElementById("evento").style.display = "none";
   };
 
+  const [dataSemTempo] = selectedDate.toISOString().split("T");
   // EVENTOS
   // Vetor de Eventos
   const [eventos, setEventos] = useState([]);
@@ -60,7 +61,9 @@ export default function Calendario() {
     // Add the new event to the list of events
     setEventos([...eventos, evento]);
 
-    alert(`Evento ${evento.titulo} registrado com sucesso!`);
+    alert(
+      `Evento ${evento.titulo} do dia ${evento.dataInicio} registrado em ${dataSemTempo} com sucesso!`,
+    );
 
     // Clear the form
     setEventoData({
@@ -97,7 +100,7 @@ export default function Calendario() {
           <div
             className="eventosLista"
             children={eventos.map((evento) => (
-              <EventoMiniatura evento={evento} />
+              <EventoMiniatura dataSelecionada={dataSemTempo} evento={evento} />
             ))}
           ></div>
           <div className="btn-adicionar-eventos w3-padding w3-margin">
@@ -152,7 +155,10 @@ export default function Calendario() {
                     name="dataInicio"
                     value={eventoData.dataInicio}
                     onChange={(e) =>
-                      setEventoData({ ...eventoData, titulo: e.target.value })
+                      setEventoData({
+                        ...eventoData,
+                        dataInicio: e.target.value,
+                      })
                     }
                   />
                 </div>
@@ -164,7 +170,7 @@ export default function Calendario() {
                     name="dataFim"
                     value={eventoData.dataFim}
                     onChange={(e) =>
-                      setEventoData({ ...eventoData, titulo: e.target.value })
+                      setEventoData({ ...eventoData, dataFim: e.target.value })
                     }
                   />
                 </div>
@@ -176,7 +182,10 @@ export default function Calendario() {
                     name="horarioInicio"
                     value={eventoData.horarioInicio}
                     onChange={(e) =>
-                      setEventoData({ ...eventoData, titulo: e.target.value })
+                      setEventoData({
+                        ...eventoData,
+                        horarioInicio: e.target.value,
+                      })
                     }
                   />
                 </div>
@@ -188,7 +197,10 @@ export default function Calendario() {
                     name="horarioFim"
                     value={eventoData.horarioFim}
                     onChange={(e) =>
-                      setEventoData({ ...eventoData, titulo: e.target.value })
+                      setEventoData({
+                        ...eventoData,
+                        horarioFim: e.target.value,
+                      })
                     }
                   />
                 </div>
@@ -202,7 +214,7 @@ export default function Calendario() {
                     name="local"
                     value={eventoData.local}
                     onChange={(e) =>
-                      setEventoData({ ...eventoData, titulo: e.target.value })
+                      setEventoData({ ...eventoData, local: e.target.value })
                     }
                   />
                 </div>
@@ -213,7 +225,10 @@ export default function Calendario() {
                     name="frequencia"
                     value={eventoData.frequencia}
                     onChange={(e) =>
-                      setEventoData({ ...eventoData, titulo: e.target.value })
+                      setEventoData({
+                        ...eventoData,
+                        frequencia: e.target.value,
+                      })
                     }
                   >
                     <option value="" disabled selected>
@@ -233,7 +248,7 @@ export default function Calendario() {
                   name="desc"
                   value={eventoData.desc}
                   onChange={(e) =>
-                    setEventoData({ ...eventoData, titulo: e.target.value })
+                    setEventoData({ ...eventoData, desc: e.target.value })
                   }
                 ></textarea>
               </div>
