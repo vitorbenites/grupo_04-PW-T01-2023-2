@@ -1,14 +1,26 @@
-import { useState, useContext, createContext } from "react";
+import { useState, useEffect } from "react";
 import "w3-css/w3.css";
 import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
-import EventoMiniatura from "./EventoMiniatura";
+import styled from "styled-components";
 import "./style.css";
 import "@fontsource/jetbrains-mono";
+import { auth, db } from "../../firebaseConnection";
+import { signOut } from "firebase/auth";
+
+import {
+  addDoc,
+  collection,
+  onSnapshot,
+  query,
+  orderBy,
+  where,
+  doc,
+  deleteDoc,
+  updateDoc,
+} from "firebase/firestore";
 
 export default function Calendario() {
   // VARIÁVEIS E FUNÇÕES DO COMPONENTE CALENDÁRIO
-  // Hooks
   const [selectedDate, setSelectedDate] = useState(new Date());
   const date = new Date();
   const [eventDate, setEventDate] = useState(date.toLocaleDateString("pt-br"));
@@ -18,13 +30,11 @@ export default function Calendario() {
     setEventDate(nextValue.toLocaleDateString("pt-br"));
   }
 
-  // VARIÁVEIS DOS EVENTOS
-  // data para passar ao componente miniatura
-  const [dataSemTempo] = selectedDate.toISOString().split("T");
-  // Variável booleana para determinar se é uma edição de evento
-  const [editando, setEditando] = useState([false]);
-  // Variável que guarda o índice de um evento na lista de eventos
-  const [indiceEvento, setIndiceEvento] = useState([]);
+  // VARIÁVEIS DOS USUÁRIOS E EVENTOS
+  // Usuário
+  const [user, setUser] = useState({});
+  // Evento editando
+  const [editando, setEditando] = useState({});
   // Lista de eventos
   const [eventos, setEventos] = useState([]);
   // O objeto evento
@@ -38,24 +48,49 @@ export default function Calendario() {
     frequencia: "",
     desc: "",
   });
+  // Carrega as tarefas do usuário logado no sistema ao acessar a rota /calendario da aplicação e ao atualizar a página
+  useEffect(() => {
+    // Função que carrega os eventos do usuário logado no sistema
+    async function loadEventos() {
+      // localStorage.getItem é utilizado para recuperar o objeto userData do localStorage do navegador do usuário
+      // JSON.parse é utilizado para converter a string JSON em um objeto JavaScript novamente e armazenar na variável data o objeto userData
+      const userDetail = localStorage.getItem("@detailUser");
+      // setUser é utilizado para armazenar o objeto userData na variável user
+      setUser(JSON.parse(userDetail));
+      // Verifica se o usuário está logado utilizando o objeto user retornado pelo localStorage.getItem
+      if (userDetail) {
+        const data = JSON.parse(userDetail);
+        // collection é utilizado para acessar a coleção eventos do banco de dados Firestore do Firebase
+        const eventoRef = collection(db, "eventos");
+        // query é utilizado para realizar uma consulta na coleção eventos do banco de dados Firestore do Firebase
+        // para recuperar os eventos do usuário logado no sistema
+        const q = query(
+          eventoRef,
+          orderBy("created", "desc"),
+          where("userUid", "==", data?.uid),
+        );
+        // onSnapshot é utilizado para recuperar os dados da consulta realizada na coleção eventos do banco de dados Firestore do Firebase
+        // e atualizar a variável eventos com os dados retornados da consulta
+        const unsub = onSnapshot(q, (snapshot) => {
+          let lista = [];
+          snapshot.forEach((doc) => {
+            lista.push({
+              id: doc.id,
+              evento: doc.data().evento,
+              userUid: doc.data().evento.userUid,
+            });
+          });
+          setEventos(lista);
+        });
+      }
+    }
+    loadEventos();
+  }, []);
 
   // MODAL ADICIONAR/EDITAR EVENTO
   // Função para abrir o modal de adicionar/editar evento
   const handleAdicionarEditarEvento = () => {
-    // Limpa o formulário
-    setEventoData({
-      titulo: "",
-      dataInicio: "",
-      dataFim: "",
-      horarioInicio: "",
-      horarioFim: "",
-      local: "",
-      frequencia: "",
-      desc: "",
-    });
-    // Não está editando, está adicionando
-    setEditando(false);
-    // Nome da janela é "Adicinar Evento"
+    // Nome da janela é "Adicionar Evento"
     document.getElementById("modal").textContent = "Adicionar Evento";
     // Mostra o modal
     document.getElementById("evento").style.display = "block";
@@ -80,75 +115,117 @@ export default function Calendario() {
 
   // FUNÇÕES PARA REGISTRAR, EDITAR E EXCLUIR EVENTO
   // Função para registrar o evento quando clicar no botão submit
-  const registrarEvento = (event) => {
+  async function registrarEvento(event) {
     event.preventDefault();
 
-    // Cria novo evento
-    const evento = {
-      titulo: eventoData.titulo,
-      dataInicio: eventoData.dataInicio,
-      dataFim: eventoData.dataFim,
-      horarioInicio: eventoData.horarioInicio,
-      horarioFim: eventoData.horarioFim,
-      local: eventoData.local,
-      frequencia: eventoData.frequencia,
-      desc: eventoData.desc,
-    };
-
-    // Se é uma edição de evento
-    if (editando == true) {
-      // Substitui o evento no índice previamente guardado
-      eventos.splice(indiceEvento, 1, evento);
-      // editando é falso
-      setEditando(false);
-    } else {
-      // Adiciona o evento na lista
-      setEventos([...eventos, evento]);
+    // Verifica se o campo tarefa foi preenchido para atualizar uma tarefa existente
+    if (editando?.id) {
+      editarEvento();
+      return;
     }
-
-    // Limpa o formulário
-    setEventoData({
-      titulo: "",
-      dataInicio: "",
-      dataFim: "",
-      horarioInicio: "",
-      horarioFim: "",
-      local: "",
-      frequencia: "",
-      desc: "",
-    });
+    // addDoc é utilizado para registrar uma nova tarefa no banco de dados Firestore do Firebase
+    await addDoc(collection(db, "eventos"), {
+      evento: eventoData,
+      created: new Date(),
+      userUid: user?.uid,
+    })
+      .then(() => {
+        console.log("EVENTO REGISTRADO");
+        setEventoData({});
+      })
+      .catch((error) => {
+        console.log("ERRO AO REGISTRAR " + error);
+      });
 
     // Fecha o modal depois do submit
     document.getElementById("evento").style.display = "none";
-  };
+  }
 
   // Função para excluir um evento quando o usuário clica em "Excluir"
-  function excluirEvento(evento) {
-    // Remove o evento da lista
-    const eventosAtualizados = eventos.filter((e) => e !== evento);
-    // Atualiza o estado da lista
-    setEventos(eventosAtualizados);
+  async function excluirEvento(id) {
+    const docRef = doc(db, "eventos", id);
+    await deleteDoc(docRef);
+  }
+
+  // Editar informações de uma tarefa existente no banco de dados Firestore do Firebase
+  function editEvento(item) {
+    handleAdicionarEditarEvento();
+    document.getElementById("modal").textContent = "Editar Evento";
+    setEventoData(item.evento);
+    setEditando(item);
   }
 
   // Função para editar o evento
-  const editarEvento = (evento) => {
-    // Mostra o modal de adicionar/editar evento
-    handleAdicionarEditarEvento();
-    // Nome da janela é "Editar Evento"
-    document.getElementById("modal").textContent = "Editar Evento";
-    // Filtra pelo evento selecionado para editar
-    const eventoSelecionado = eventos.filter((e) => e === evento);
-    // Armazena o índice do evento
-    setIndiceEvento(eventos.findIndex((e) => e === evento));
-    // Editando é verdadeiro
-    setEditando(true);
-    // O estado de eventoData é o evento a ser editado
-    setEventoData(evento);
+  async function editarEvento(evento) {
+    const docRef = doc(db, "eventos", editando?.id);
+    await updateDoc(docRef, {
+      evento: eventoData,
+    })
+      .then(() => {
+        console.log("EVENTO ATUALIZADO");
+        setEventoData({
+          titulo: "",
+          dataInicio: "",
+          dataFim: "",
+          horarioInicio: "",
+          horarioFim: "",
+          local: "",
+          frequencia: "",
+          desc: "",
+        });
+        setEditando({});
+      })
+      .catch(() => {
+        console.log("ERRO AO ATUALIZAR");
+        setEventoData({
+          titulo: "",
+          dataInicio: "",
+          dataFim: "",
+          horarioInicio: "",
+          horarioFim: "",
+          local: "",
+          frequencia: "",
+          desc: "",
+        });
+        setEditando({});
+      });
+    handleFecharJanela();
+  }
+
+  // Realiza o logout
+  async function handleLogout() {
+    await signOut(auth);
+  }
+
+  // Filtrar pelos eventos para serem renderizados apenas naquele dia
+  const dataSemTempo = selectedDate.toISOString().split("T")[0];
+
+  const eventosFiltrados = eventos.filter((item) => {
+    const dataInicio = new Date(item.evento.dataInicio);
+    const dataFim = new Date(item.evento.dataFim);
+    const dataAtual = new Date(dataSemTempo);
+    return (
+      dataAtual.getTime() >= dataInicio.getTime() &&
+      dataAtual.getTime() <= dataFim.getTime()
+    );
+  });
+
+  // Marcar os dias do componente react-calendar que possuem um evento
+  const tileClassName = ({ date, view }) => {
+    const eventoNaData = eventos.some((item) => {
+      const dataInicio = new Date(item.evento.dataInicio);
+      const dataFim = new Date(item.evento.dataFim);
+      const dataRender = new Date(date);
+      return (
+        (dataRender.getTime() >= dataInicio.getTime() &&
+          dataRender.getTime() <= dataFim.getTime()) ||
+        item.evento.dataFim === date.toISOString().split("T")[0]
+      );
+    });
+    return eventoNaData ? "highlight" : "";
   };
 
-  // Contexto para ser utilizado no EventoMiniatura
-  const CalendarioContexto = createContext();
-
+  // Renderização do componente
   return (
     <div id="Calendario">
       <div className="w3-display-middle w3-center">
@@ -157,16 +234,19 @@ export default function Calendario() {
           id="calendario-card"
         >
           <div className="w3-teal">
-            <span className="w3-cursive w3-xxlarge w3-padding">Calendário</span>
+            <span className="w3-xxlarge w3-padding">Calendário</span>
           </div>
           {/*Componente Calendar */}
-          <Calendar
-            locale="pt-BR"
-            className="w3-light-blue"
-            calendarType="gregory"
-            onChange={handleDate}
-            value={selectedDate}
-          />
+          <CalendarioContainer>
+            <Calendar
+              locale="pt-BR"
+              className="w3-light-blue"
+              calendarType="gregory"
+              onChange={handleDate}
+              value={selectedDate}
+              tileClassName={tileClassName}
+            />
+          </CalendarioContainer>
         </div>
         {/*Parte dos Eventos*/}
         <div className="w3-card w3-cell w3-mobile w3-teal">
@@ -176,24 +256,38 @@ export default function Calendario() {
           <div>
             <span className="w3-xlarge">{eventDate}</span>
           </div>
-          {/*Contexto do Calendário passando a lista de eventos e os métodos excluirEvento 
-					e editarEvento para o componente EventoMiniatura*/}
-          <CalendarioContexto.Provider
-            value={{ eventos, excluirEvento, editarEvento }}
-          >
-            {/*Div de renderização dos eventos*/}
-            <div
-              className="eventosLista"
-              children={eventos.map((evento) => (
-                <EventoMiniatura
-                  key={evento}
-                  dataSelecionada={dataSemTempo}
-                  evento={evento}
-                  contexto={CalendarioContexto}
-                />
-              ))}
-            ></div>
-          </CalendarioContexto.Provider>
+          <div>
+            {/*Mostrar os eventos do dia selecionado*/}
+            {eventosFiltrados.map((item) => (
+              <div
+                key={item.id}
+                className="w3-card w3-cursive w3-light-green w3-margin"
+              >
+                <div>
+                  <span className="w3-left w3-padding">
+                    {item.evento.titulo}
+                  </span>
+                </div>
+                <div className="w3-left w3-padding">
+                  <span>
+                    {item.evento.horarioInicio} - {item.evento.horarioFim}
+                  </span>
+                </div>
+                <div
+                  className="w3-button w3-block w3-padding-small w3-blue w3-hover-indigo"
+                  onClick={() => editEvento(item)}
+                >
+                  Editar
+                </div>
+                <div
+                  className="w3-button w3-block w3-padding-small w3-red w3-hover-indigo"
+                  onClick={() => excluirEvento(item.id)}
+                >
+                  Excluir
+                </div>
+              </div>
+            ))}
+          </div>
           {/*Botão de adicionar eventos*/}
           <div className="btn-adicionar-eventos w3-padding w3-margin">
             <button
@@ -360,9 +454,91 @@ export default function Calendario() {
           </div>
         </div>
       </form>
-      <div className="w3-button w3-red w3-display-topright w3-margin w3-padding">
+      <div
+        className="w3-button w3-red w3-display-topright w3-margin w3-padding"
+        onClick={handleLogout}
+      >
         Sair
       </div>
     </div>
   );
 }
+
+// CSS do componente react-calendar
+const CalendarioContainer = styled.div`
+  .highlight {
+    background-color: olivedrab;
+  }
+  background-color: #009688;
+
+  .react-calendar__navigation {
+    display: flex;
+
+    .react-calendar__navigation__label {
+      font-weight: bold;
+    }
+
+    .react-calendar__navigation__arrow {
+      flex-grow: 0.333;
+    }
+  }
+
+  .react-calendar__month-view__weekdays {
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    text-decoration: none;
+    background-color: steelblue;
+  }
+
+  button {
+    background-color: steelblue;
+    border: 0;
+    border-radius: 0px;
+    color: white;
+    padding: 8px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: slategrey;
+    }
+
+    &:active {
+    }
+  }
+
+  .react-calendar__month-view__days {
+    display: grid !important;
+    grid-template-columns: 14.2% 14.2% 14.2% 14.2% 14.2% 14.2% 14.2%;
+
+    .react-calendar__tile {
+      max-width: initial !important;
+    }
+
+    .react-calendar__tile--range {
+      background-color: darkcyan;
+    }
+  }
+
+  .react-calendar__month-view__days__day--neighboringMonth {
+    opacity: 0.7;
+  }
+  .react-calendar__month-view__days__day--weekend {
+    color: #dfdfdf;
+  }
+
+  .react-calendar__year-view__months,
+  .react-calendar__decade-view__years,
+  .react-calendar__century-view__decades {
+    display: grid !important;
+    grid-template-columns: 20% 20% 20% 20% 20%;
+
+    &.react-calendar__year-view__months {
+      grid-template-columns: 33.3% 33.3% 33.3%;
+    }
+
+    .react-calendar__tile {
+      max-width: initial !important;
+    }
+  }
+`;

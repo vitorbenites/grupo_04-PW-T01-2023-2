@@ -1,9 +1,11 @@
-import logo from "./logo.svg";
-import "./App.css";
-import Calendario from "./Components/Calendario";
+import { BrowserRouter } from "react-router-dom";
+import RoutesApp from "./routes";
 
-function App() {
-  return <Calendario />;
+// Definição do componente App que é o componente raiz da aplicação e que contém as rotas da aplicação
+export default function App() {
+  return (
+    <BrowserRouter>
+      <RoutesApp />
+    </BrowserRouter>
+  );
 }
-
-export default App;
