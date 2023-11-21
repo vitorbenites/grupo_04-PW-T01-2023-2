@@ -9,6 +9,7 @@ O aplicativo web Calendário é uma ferramenta simples e eficaz para gerenciar s
 Clonar o repositório e instalar:
 ~~~
 git clone https://github.com/vitorbenites/grupo_04-PW-T01-2023-2
+cd grupo_04-PW-T01-2023-2/
 cd calendario/
 npm install
 npm start
