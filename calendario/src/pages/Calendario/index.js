@@ -6,7 +6,6 @@ import "./style.css";
 import "@fontsource/jetbrains-mono";
 import { auth, db } from "../../firebaseConnection";
 import { signOut } from "firebase/auth";
-
 import {
   addDoc,
   collection,
@@ -118,12 +117,12 @@ export default function Calendario() {
   async function registrarEvento(event) {
     event.preventDefault();
 
-    // Verifica se o campo tarefa foi preenchido para atualizar uma tarefa existente
+    // Verifica se o campo evento foi preenchido para atualizar um evento existente
     if (editando?.id) {
       editarEvento();
       return;
     }
-    // addDoc é utilizado para registrar uma nova tarefa no banco de dados Firestore do Firebase
+    // addDoc é utilizado para registrar um nova evento no banco de dados Firestore do Firebase
     await addDoc(collection(db, "eventos"), {
       evento: eventoData,
       created: new Date(),
@@ -147,7 +146,7 @@ export default function Calendario() {
     await deleteDoc(docRef);
   }
 
-  // Editar informações de uma tarefa existente no banco de dados Firestore do Firebase
+  // Editar informações de um evento existente no banco de dados Firestore do Firebase
   function editEvento(item) {
     handleAdicionarEditarEvento();
     document.getElementById("modal").textContent = "Editar Evento";

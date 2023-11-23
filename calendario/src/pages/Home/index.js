@@ -3,7 +3,6 @@ import "./home.css";
 import { Link } from "react-router-dom";
 import { auth } from "../../firebaseConnection";
 import { signInWithEmailAndPassword } from "firebase/auth";
-
 import { useNavigate } from "react-router-dom";
 
 // Componente Home que é utilizado para fazer o login no sistema e acessar a rota /calendario da aplicação
