@@ -4,7 +4,6 @@ import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 
 // Configurações encontradas no console do Firebase
-//Insira aqui as configurações
 const firebaseConfig = {
   apiKey: "AIzaSyCCfKX-eGiC1LLRwU64BoGvk9OC7Ocd2r8",
   authDomain: "calendario-9ccc6.firebaseapp.com",

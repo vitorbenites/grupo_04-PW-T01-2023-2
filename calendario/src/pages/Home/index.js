@@ -1,14 +1,12 @@
 import { useState } from "react";
 import "./home.css";
-
 import { Link } from "react-router-dom";
-
 import { auth } from "../../firebaseConnection";
 import { signInWithEmailAndPassword } from "firebase/auth";
 
 import { useNavigate } from "react-router-dom";
 
-// Componente Home que é utilizado para fazer o login no sistema e acessar a rota /admin da aplicação
+// Componente Home que é utilizado para fazer o login no sistema e acessar a rota /calendario da aplicação
 export default function Home() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

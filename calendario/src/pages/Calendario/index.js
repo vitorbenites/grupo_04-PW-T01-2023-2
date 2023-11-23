@@ -48,7 +48,7 @@ export default function Calendario() {
     frequencia: "",
     desc: "",
   });
-  // Carrega as tarefas do usuário logado no sistema ao acessar a rota /calendario da aplicação e ao atualizar a página
+  // Carrega os eventos do usuário logado no sistema ao acessar a rota /calendario da aplicação e ao atualizar a página
   useEffect(() => {
     // Função que carrega os eventos do usuário logado no sistema
     async function loadEventos() {

@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import { Link } from "react-router-dom";
 import { auth } from "../../firebaseConnection";
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -21,7 +20,7 @@ export default function Register() {
       // cria um novo usuário no sistema
       await createUserWithEmailAndPassword(auth, email, password)
         .then(() => {
-          // se o usuário foi criado com sucesso, redireciona para a rota /admin da aplicação
+          // se o usuário foi criado com sucesso, redireciona para a rota /calendario da aplicação
           navigate("/calendario", { replace: true });
         })
         .catch(() => {

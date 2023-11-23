@@ -1,8 +1,6 @@
 import { Routes, Route } from "react-router-dom";
-
 import Home from "../pages/Home";
 import Register from "../pages/Register";
-// import Admin from "../pages/Admin";
 import Calendario from "../pages/Calendario";
 import Private from "./Private";
 

@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
-
 import { auth } from "../firebaseConnection";
 import { onAuthStateChanged } from "firebase/auth";
-
 import { Navigate } from "react-router-dom";
 
-// Componente Private que verifica se o usuário está logado para acessar a rota /admin da aplicação
+// Componente Private que verifica se o usuário está logado para acessar a rota /calendario da aplicação
 export default function Private({ children }) {
   const [loading, setLoading] = useState(true);
   const [signed, setSigned] = useState(false);
@@ -49,6 +47,6 @@ export default function Private({ children }) {
     return <Navigate to="/" />;
   }
 
-  // Se o usuário estiver logado, retorna o componente children que é o componente Admin
+  // Se o usuário estiver logado, retorna o componente children que é o componente Calendario
   return children;
 }
